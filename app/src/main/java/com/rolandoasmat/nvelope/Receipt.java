@@ -1,7 +1,6 @@
 package com.rolandoasmat.nvelope;
 
-import java.sql.Date;
-
+import java.util.Date;
 import ckm.simple.sql_provider.annotation.SimpleSQLColumn;
 import ckm.simple.sql_provider.annotation.SimpleSQLTable;
 
