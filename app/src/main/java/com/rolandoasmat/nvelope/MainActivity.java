@@ -14,8 +14,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -25,6 +36,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -45,6 +57,34 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        List<PieEntry> entries = new ArrayList<>();
+
+        entries.add(new PieEntry(18.5f, "Eating Out"));
+        entries.add(new PieEntry(26.7f, "Groceries"));
+        entries.add(new PieEntry(24.0f, "Entertainment"));
+        entries.add(new PieEntry(30.8f, "Toys"));
+
+        PieDataSet set = new PieDataSet(entries, "");
+
+        set.setColors(ColorTemplate.MATERIAL_COLORS);
+        set.setValueTextSize(13.0f);
+        set.setValueTextColor(R.color.colorPrimary);
+
+        PieData data = new PieData(set);
+        data.setValueFormatter(new PercentFormatter());
+        mPieChart.setData(data);
+        mPieChart.setHoleRadius(0.0f);
+        mPieChart.setTransparentCircleRadius(0.0f);
+        mPieChart.setDrawEntryLabels(false);
+        mPieChart.setEntryLabelTextSize(30.0f);
+        Description description = mPieChart.getDescription();
+        description.setText("");
+        Legend legend = mPieChart.getLegend();
+        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
+        mPieChart.invalidate(); // refresh
     }
 
     @Override
