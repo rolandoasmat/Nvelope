@@ -13,8 +13,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.github.mikephil.charting.charts.PieChart;
+
+import butterknife.BindView;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    @BindView(R.id.pie_chart) protected PieChart mPieChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
