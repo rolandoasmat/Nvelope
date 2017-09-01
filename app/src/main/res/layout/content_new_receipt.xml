@@ -38,11 +38,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/method_of_payment" />
+            android:text="@string/payment_method" />
         <EditText
             android:id="@+id/payment_method_edit_text"
             style="@style/FullWidthEditText"
-            android:hint="@string/method_of_payment" />
+            android:hint="@string/payment_method" />
 
 
         <TextView

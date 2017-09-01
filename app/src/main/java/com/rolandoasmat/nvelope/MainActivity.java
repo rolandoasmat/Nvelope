@@ -54,6 +54,9 @@ public class MainActivity extends AppCompatActivity
     protected RecyclerView mReceiptsRecyclerView;
     protected ReceiptsAdapter mAdapter;
 
+    @BindView(R.id.drawer_layout)
+    protected DrawerLayout mDrawer;
+
     private final int REFRESH_UI = 9482;
     private String mFilter = "";
 
@@ -81,11 +84,11 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    private void setupDrawer(){
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    private void setupDrawer() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawer.setDrawerListener(toggle);
+        // todo get navigation view instead. and getMenu
         toggle.syncState();
     }
 
