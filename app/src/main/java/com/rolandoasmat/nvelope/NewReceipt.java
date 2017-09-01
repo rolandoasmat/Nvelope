@@ -1,6 +1,7 @@
 package com.rolandoasmat.nvelope;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -51,12 +52,37 @@ public class NewReceipt extends AppCompatActivity {
 
     public void onSave(View view) {
         String location = mLocation.getText().toString();
+        if(location.equals("")) {
+            showSnackBar(R.string.empty_location_field);
+            return;
+        }
+
         String category = mCategory.getSelectedItem().toString();
+        if(category.equals("")) {
+            showSnackBar(R.string.empty_category_field);
+            return;
+        }
+
         String methodOfPayment = mMethodOfPayment.getText().toString();
-        double amount = Double.parseDouble(mAmount.getText().toString());
+        if(methodOfPayment.equals("")) {
+            showSnackBar(R.string.empty_method_of_payment_field);
+            return;
+        }
+
+
+        String amountText = mAmount.getText().toString();
+        if(amountText.equals("")) {
+            showSnackBar(R.string.empty_amount_field);
+            return;
+        }
+        double amount = Double.parseDouble(amountText);
 
         Receipt receipt = new Receipt(location, category, methodOfPayment, mDate, amount);
         getContentResolver().insert(ReceiptsTable.CONTENT_URI, ReceiptsTable.getContentValues(receipt, false));
         onBackPressed();
+    }
+
+    private void showSnackBar(int id){
+        Snackbar.make(findViewById(R.id.coordinator_layout), id, Snackbar.LENGTH_LONG).show();
     }
 }

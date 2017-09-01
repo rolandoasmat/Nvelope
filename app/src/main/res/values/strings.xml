@@ -14,6 +14,10 @@
     <string name="date">Date</string>
     <string name="amount">Amount</string>
     <string name="save">Save</string>
+    <string name="empty_location_field">Empty Location Field</string>
+    <string name="empty_category_field">Empty Category Field</string>
+    <string name="empty_method_of_payment_field">Empty Method of Payment Field</string>
+    <string name="empty_amount_field">Empty Amount Field</string>
 
     <string-array name="categories_array">
         <item>Eating Out</item>
