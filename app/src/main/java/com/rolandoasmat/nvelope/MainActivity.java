@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity
     protected RecyclerView mReceiptsRecyclerView;
     protected ReceiptsAdapter mAdapter;
 
-    private final int REFRESH_PI = 9482;
+    private final int REFRESH_UI = 9482;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,8 +123,8 @@ public class MainActivity extends AppCompatActivity
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
     }
 
-    private void refreshPie() {
-        getSupportLoaderManager().initLoader(REFRESH_PI, null, this);
+    private void refreshUI() {
+        getSupportLoaderManager().initLoader(REFRESH_UI, null, this);
     }
 
     private void bindPie(Cursor cursor) {
@@ -172,10 +172,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupRecyclerView() {
-        Cursor cursor = getContentResolver().query(ReceiptsTable.CONTENT_URI,null,null,null,null);
-        List<Receipt> receipts = ReceiptsTable.getRows(cursor,false);
-        mAdapter = new ReceiptsAdapter(receipts);
+        mAdapter = new ReceiptsAdapter();
         mReceiptsRecyclerView.setAdapter(mAdapter);
+    }
+
+    private void bindRecyclerView(Cursor cursor) {
+        List<Receipt> receipts = ReceiptsTable.getRows(cursor, false);
+        mAdapter.updateData(receipts);
     }
 
     @Override
@@ -216,13 +219,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        refreshPie();
+        refreshUI();
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         switch(i) {
-            case REFRESH_PI:
+            case REFRESH_UI:
                 return new CursorLoader(this, ReceiptsTable.CONTENT_URI, null, null, null, null);
             default:
                 throw new IllegalArgumentException("no id handled!");
@@ -233,8 +236,9 @@ public class MainActivity extends AppCompatActivity
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         int id = loader.getId();
         switch(id) {
-            case REFRESH_PI:
+            case REFRESH_UI:
                 bindPie(cursor);
+                bindRecyclerView(cursor);
                 break;
             default:
                 throw new IllegalArgumentException("ID: "+ id + " not handled.");

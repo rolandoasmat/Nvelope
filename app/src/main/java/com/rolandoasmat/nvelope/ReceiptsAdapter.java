@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +18,14 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptEntryViewHolder
     private List<Receipt> mReceipts;
     public ReceiptsAdapter(List<Receipt> receipts) {
         mReceipts = receipts;
+    }
+    public ReceiptsAdapter() {
+        mReceipts = new ArrayList<>();
+    }
+
+    public void updateData(List<Receipt> receipts){
+        this.mReceipts = receipts;
+        notifyDataSetChanged();
     }
 
     @Override
