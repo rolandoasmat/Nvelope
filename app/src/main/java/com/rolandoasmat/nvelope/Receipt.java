@@ -9,14 +9,14 @@ import ckm.simple.sql_provider.annotation.SimpleSQLTable;
  */
 @SimpleSQLTable(table = "receipts", provider = "NvelopeProvider")
 public class Receipt {
-    @SimpleSQLColumn("title")
-    public String mTitle;
+    @SimpleSQLColumn("name_of_location")
+    public String mNameOfLocation;
 
     @SimpleSQLColumn("category")
     public String mCategory;
 
-    @SimpleSQLColumn("payment_method")
-    public String mPaymentMethod;
+    @SimpleSQLColumn("method_of_payment")
+    public String mMethodOfPayment;
 
     @SimpleSQLColumn("date")
     public Date mDate;
