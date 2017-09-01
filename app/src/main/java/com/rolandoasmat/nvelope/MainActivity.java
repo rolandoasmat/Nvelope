@@ -1,11 +1,12 @@
 package com.rolandoasmat.nvelope;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -32,6 +33,15 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    @BindView(R.id.toolbar)
+    protected Toolbar mToolbar;
+
+    @BindView(R.id.fab)
+    protected FloatingActionButton mFab;
+
+    @BindView(R.id.nav_view)
+    protected NavigationView mNavigationView;
+
     @BindView(R.id.pie_chart)
     protected PieChart mPieChart;
 
@@ -44,43 +54,56 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        setSupportActionBar(mToolbar);
+        setupFab();
+        setupDrawer();
+        mNavigationView.setNavigationItemSelectedListener(this);
+        dbInit();
+        setupPie();
+        setupRecyclerView();
+    }
+
+    private void setupFab() {
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, NewReceipt.class);
                 startActivity(intent);
             }
         });
+    }
 
+    private void setupDrawer(){
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+    }
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+    private void dbInit() {
+        // Initialize DB if needed.
+        // Restore preferences
+        SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        String isDatabaseInitializedKey = "isDatabaseInitialized";
+        boolean isDatabaseInitialized = settings.getBoolean(isDatabaseInitializedKey, false);
+        if(!isDatabaseInitialized) {
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean(isDatabaseInitializedKey, true);
+            editor.commit();
+            // Initialize categories
+            getContentResolver().insert(CategoriesTable.CONTENT_URI, CategoriesTable.getContentValues(new Category("Eating Out"), false));
+            getContentResolver().insert(CategoriesTable.CONTENT_URI, CategoriesTable.getContentValues(new Category("Groceries"), false));
+            getContentResolver().insert(CategoriesTable.CONTENT_URI, CategoriesTable.getContentValues(new Category("Entertainment"), false));
+            getContentResolver().insert(CategoriesTable.CONTENT_URI, CategoriesTable.getContentValues(new Category("Other"), false));
+            // Initialize default payment methods
+            getContentResolver().insert(Payment_methodsTable.CONTENT_URI, Payment_methodsTable.getContentValues(new PaymentMethod("WF Credit Card"), false));
+            getContentResolver().insert(Payment_methodsTable.CONTENT_URI, Payment_methodsTable.getContentValues(new PaymentMethod("BoA Credit Card"), false));
+        }
+    }
 
-        List<PieEntry> entries = new ArrayList<>();
-
-        entries.add(new PieEntry(18.5f, "Eating Out"));
-        entries.add(new PieEntry(26.7f, "Groceries"));
-        entries.add(new PieEntry(24.0f, "Entertainment"));
-        entries.add(new PieEntry(30.8f, "Toys"));
-
-        PieDataSet set = new PieDataSet(entries, "");
-
-        set.setColors(ColorTemplate.MATERIAL_COLORS);
-        set.setValueTextSize(13.0f);
-        set.setValueTextColor(R.color.colorPrimary);
-
-        PieData data = new PieData(set);
-        data.setValueFormatter(new PercentFormatter());
-        mPieChart.setData(data);
+    private void setupPie() {
         mPieChart.setHoleRadius(0.0f);
         mPieChart.setTransparentCircleRadius(0.0f);
         mPieChart.setDrawEntryLabels(false);
@@ -92,16 +115,27 @@ public class MainActivity extends AppCompatActivity
         legend.setOrientation(Legend.LegendOrientation.VERTICAL);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
+    }
 
+    private void refreshPie() {
+        List<PieEntry> entries = new ArrayList<>();
+        entries.add(new PieEntry(18.5f, "Eating Out"));
+        entries.add(new PieEntry(26.7f, "Groceries"));
+        entries.add(new PieEntry(24.0f, "Entertainment"));
+        entries.add(new PieEntry(30.8f, "Toys"));
+        PieDataSet set = new PieDataSet(entries, "");
+        set.setColors(ColorTemplate.MATERIAL_COLORS);
+        set.setValueTextSize(13.0f);
+        set.setValueTextColor(R.color.colorPrimary);
+        PieData data = new PieData(set);
+        data.setValueFormatter(new PercentFormatter());
+        mPieChart.setData(data);
         mPieChart.invalidate(); // refresh
+    }
 
-
+    private void setupRecyclerView() {
         Cursor cursor = getContentResolver().query(ReceiptsTable.CONTENT_URI,null,null,null,null);
         List<Receipt> receipts = ReceiptsTable.getRows(cursor,false);
-        for(Receipt receipt: receipts) {
-            Log.v("tag", receipt.toString());
-        }
-
         mAdapter = new ReceiptsAdapter(receipts);
         mReceiptsRecyclerView.setAdapter(mAdapter);
     }
@@ -122,22 +156,29 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
+//        if (id == R.id.nav_camera) {
+//            // Handle the camera action
+//        } else if (id == R.id.nav_gallery) {
+//
+//        } else if (id == R.id.nav_slideshow) {
+//
+//        } else if (id == R.id.nav_manage) {
+//
+//        } else if (id == R.id.nav_share) {
+//
+//        } else if (id == R.id.nav_send) {
+//
+//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshPie();
+    }
+
 }
