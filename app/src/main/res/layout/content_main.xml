@@ -20,10 +20,12 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:descendantFocusability="blocksDescendants">
+            android:descendantFocusability="blocksDescendants"
+            >
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginBottom="64dp">
 
                 <include layout="@layout/pie_chart"
                     android:id="@+id/chart"
