@@ -30,7 +30,9 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,15 +55,13 @@ public class MainActivity extends AppCompatActivity
     protected RecyclerView mReceiptsRecyclerView;
     protected ReceiptsAdapter mAdapter;
 
-    private final int FETCH_RECEIPTS = 0;
-    private final int FETCH_CATEGORIES = 1;
+    private final int REFRESH_PI = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         setSupportActionBar(mToolbar);
         setupFab();
         setupDrawer();
@@ -125,16 +125,17 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void refreshPie() {
-        getSupportLoaderManager().initLoader(FETCH_CATEGORIES, null, this);
+        getSupportLoaderManager().initLoader(REFRESH_PI, null, this);
     }
 
     private void bindPie(Cursor cursor) {
-        List<Category> categories = CategoriesTable.getRows(cursor, false);
+        List<Receipt> receipts = ReceiptsTable.getRows(cursor, false);
+        HashMap<String, Double> map = analyzeReceipts(receipts);
+
         List<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry(18.5f, "Eating Out"));
-        entries.add(new PieEntry(26.7f, "Groceries"));
-        entries.add(new PieEntry(24.0f, "Entertainment"));
-        entries.add(new PieEntry(30.8f, "Toys"));
+        for(String key: map.keySet()) {
+            entries.add(new PieEntry(map.get(key).floatValue(), key));
+        }
         PieDataSet set = new PieDataSet(entries, "");
         set.setColors(ColorTemplate.MATERIAL_COLORS);
         set.setValueTextSize(13.0f);
@@ -143,6 +144,32 @@ public class MainActivity extends AppCompatActivity
         data.setValueFormatter(new PercentFormatter());
         mPieChart.setData(data);
         mPieChart.invalidate(); // refresh
+    }
+
+    private HashMap<String, Double> analyzeReceipts(List<Receipt>receipts) {
+        HashMap<String, Double> map = new HashMap<>();
+        Double totalSum = 0.0;
+        for(Receipt receipt: receipts) {
+            String category = receipt.mCategory;
+            Double amount = new Double(receipt.mAmount);
+            totalSum += amount;
+            if(map.containsKey(category)){
+                Double currentSum = map.get(category);
+                Double newSum = currentSum + amount;
+                map.remove(category);
+                map.put(category, newSum);
+            } else {
+                map.put(category, amount);
+            }
+        }
+        // Calculate percentages
+        HashMap<String, Double> finalMap = new HashMap<>();
+        for(String key: map.keySet()) {
+            Double sum = map.get(key);
+            Double percent = (sum / totalSum) * 100.0;
+            finalMap.put(key, percent);
+        }
+        return finalMap;
     }
 
     private void setupRecyclerView() {
@@ -196,7 +223,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         switch(i) {
-            case FETCH_CATEGORIES:
+            case REFRESH_PI:
                 return new CursorLoader(this, ReceiptsTable.CONTENT_URI, null, null, null, null);
             default:
                 throw new IllegalArgumentException("no id handled!");
@@ -207,7 +234,7 @@ public class MainActivity extends AppCompatActivity
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         int id = loader.getId();
         switch(id) {
-            case FETCH_CATEGORIES:
+            case REFRESH_PI:
                 bindPie(cursor);
                 break;
             default:
