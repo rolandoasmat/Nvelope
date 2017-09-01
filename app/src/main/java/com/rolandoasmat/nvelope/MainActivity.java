@@ -1,8 +1,10 @@
 package com.rolandoasmat.nvelope;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -84,6 +86,13 @@ public class MainActivity extends AppCompatActivity
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
         mPieChart.invalidate(); // refresh
+
+
+        Cursor cursor = getContentResolver().query(ReceiptsTable.CONTENT_URI,null,null,null,null);
+        List<Receipt> rows = ReceiptsTable.getRows(cursor,false);
+        for(Receipt row: rows) {
+            Log.v("tag", row.toString());
+        }
     }
 
     @Override

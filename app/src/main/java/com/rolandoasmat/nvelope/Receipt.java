@@ -33,4 +33,13 @@ public class Receipt {
         this.mDate = mDate;
         this.mAmount = mAmount;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Location: " + mLocation +
+                ", Category: " + mCategory +
+                ", Method of Payment: " + mMethodOfPayment +
+                ", Date: " + mDate.toString() +
+                ", Amount: " + mAmount);
+    }
 }
