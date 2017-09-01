@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -31,7 +32,12 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    @BindView(R.id.pie_chart) protected PieChart mPieChart;
+    @BindView(R.id.pie_chart)
+    protected PieChart mPieChart;
+
+    @BindView(R.id.receipts_recycler_view)
+    protected RecyclerView mReceiptsRecyclerView;
+    protected ReceiptsAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,10 +95,13 @@ public class MainActivity extends AppCompatActivity
 
 
         Cursor cursor = getContentResolver().query(ReceiptsTable.CONTENT_URI,null,null,null,null);
-        List<Receipt> rows = ReceiptsTable.getRows(cursor,false);
-        for(Receipt row: rows) {
-            Log.v("tag", row.toString());
+        List<Receipt> receipts = ReceiptsTable.getRows(cursor,false);
+        for(Receipt receipt: receipts) {
+            Log.v("tag", receipt.toString());
         }
+
+        mAdapter = new ReceiptsAdapter(receipts);
+        mReceiptsRecyclerView.setAdapter(mAdapter);
     }
 
     @Override

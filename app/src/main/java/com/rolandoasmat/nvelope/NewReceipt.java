@@ -42,7 +42,7 @@ public class NewReceipt extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         mDate = Calendar.getInstance().getTime();
-        String formattedDate = DateFormat.getDateInstance(DateFormat.LONG).format(mDate);
+        String formattedDate = Receipt.formatDate(mDate);
         mDateTextView.setText(formattedDate);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.categories_array, android.R.layout.simple_spinner_item);

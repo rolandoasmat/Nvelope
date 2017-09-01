@@ -1,5 +1,6 @@
 package com.rolandoasmat.nvelope;
 
+import java.text.DateFormat;
 import java.util.Date;
 import ckm.simple.sql_provider.annotation.SimpleSQLColumn;
 import ckm.simple.sql_provider.annotation.SimpleSQLTable;
@@ -32,6 +33,14 @@ public class Receipt {
         this.mMethodOfPayment = mMethodOfPayment;
         this.mDate = mDate;
         this.mAmount = mAmount;
+    }
+
+    public static String formatDate(Date date) {
+        return DateFormat.getDateInstance(DateFormat.LONG).format(date);
+    }
+
+    public String dateFormatted() {
+        return Receipt.formatDate(mDate);
     }
 
     @Override
