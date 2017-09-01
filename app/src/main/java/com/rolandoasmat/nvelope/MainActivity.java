@@ -85,12 +85,14 @@ public class MainActivity extends AppCompatActivity
         mPieChart.setTransparentCircleRadius(0.0f);
         mPieChart.setDrawEntryLabels(false);
         mPieChart.setEntryLabelTextSize(30.0f);
+        mPieChart.setTouchEnabled(false);
         Description description = mPieChart.getDescription();
         description.setText("");
         Legend legend = mPieChart.getLegend();
         legend.setOrientation(Legend.LegendOrientation.VERTICAL);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
+
         mPieChart.invalidate(); // refresh
 
 

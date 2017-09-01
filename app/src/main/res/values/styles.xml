@@ -26,7 +26,6 @@
     </style>
 
 
-
     <!--Receipt List Item-->
     <style name="ReceiptListItemLocation">
         <item name="android:textSize">18sp</item>
@@ -35,12 +34,14 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
+
     <style name="ReceiptListItemDate">
         <item name="android:textSize">14sp</item>
         <item name="android:textAlignment">textStart</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
+
     <style name="ReceiptListItemAmount">
         <item name="android:textSize">22sp</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
