@@ -1,7 +1,11 @@
 package com.rolandoasmat.nvelope;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,11 +18,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NewReceipt extends AppCompatActivity {
+public class NewReceipt extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     @BindView(R.id.location_edit_text)
     protected EditText mLocation;
     @BindView(R.id.category_spinner)
@@ -30,16 +35,17 @@ public class NewReceipt extends AppCompatActivity {
     protected TextView mDateTextView;
     @BindView(R.id.amount_edit_text)
     protected EditText mAmount;
+    @BindView(R.id.toolbar)
+    protected Toolbar mToolbar;
 
-    private ArrayList<String> mCategoriesArray;
+    private final int REFRESH_CATEGORIES_SPINNER = 3948;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_receipt);
         ButterKnife.bind(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -47,7 +53,20 @@ public class NewReceipt extends AppCompatActivity {
         String formattedDate = Receipt.formatDate(mDate);
         mDateTextView.setText(formattedDate);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mCategoriesArray);
+        setupCategoriesSpinner();
+    }
+
+    private void setupCategoriesSpinner() {
+        getSupportLoaderManager().initLoader(REFRESH_CATEGORIES_SPINNER, null, this);
+    }
+
+    private void bindCategoriesSpinner(Cursor cursor) {
+        List<Category> categoriesList = CategoriesTable.getRows(cursor, false);
+        ArrayList<String> categoriesArray = new ArrayList<>();
+        for(Category category: categoriesList) {
+            categoriesArray.add(category.mName);
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categoriesArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCategory.setAdapter(adapter);
     }
@@ -86,5 +105,32 @@ public class NewReceipt extends AppCompatActivity {
 
     private void showSnackBar(int id){
         Snackbar.make(findViewById(R.id.coordinator_layout), id, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        switch(i) {
+            case REFRESH_CATEGORIES_SPINNER:
+                return new CursorLoader(this, CategoriesTable.CONTENT_URI, null, null, null, null);
+            default:
+                throw new IllegalArgumentException("no id handled!");
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        int id = loader.getId();
+        switch(id) {
+            case REFRESH_CATEGORIES_SPINNER:
+                bindCategoriesSpinner(cursor);
+                break;
+            default:
+                throw new IllegalArgumentException("ID: "+ id + " not handled.");
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }

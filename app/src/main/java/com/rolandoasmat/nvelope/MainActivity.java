@@ -32,7 +32,6 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity
     protected RecyclerView mReceiptsRecyclerView;
     protected ReceiptsAdapter mAdapter;
 
-    private final int REFRESH_PI = 0;
+    private final int REFRESH_PI = 9482;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
