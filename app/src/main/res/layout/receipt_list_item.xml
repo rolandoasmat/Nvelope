@@ -6,17 +6,14 @@
 
     <TextView
         android:id="@+id/location_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        style="@style/ReceiptListItemLocation" />
 
     <TextView
         android:id="@+id/date_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        style="@style/ReceiptListItemDate" />
 
     <TextView
         android:id="@+id/amount_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        style="@style/ReceiptListItemAmount" />
 
 </LinearLayout>
