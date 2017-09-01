@@ -229,9 +229,14 @@ public class MainActivity extends AppCompatActivity
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         switch(i) {
             case REFRESH_UI:
-                return new CursorLoader(this, ReceiptsTable.CONTENT_URI, null, null, null, null);
+                if(mFilter.equals("")) {
+                    return new CursorLoader(this, ReceiptsTable.CONTENT_URI, null, null, null, null);
+                } else {
+                    String[] filter = new String[]{"\'" + mFilter + "\'"};
+                    return new CursorLoader(this, ReceiptsTable.CONTENT_URI, null, " category IS ? ", filter , null);
+                }
             default:
-                throw new IllegalArgumentException("no id handled!");
+                throw new IllegalArgumentException("ID: " + i + " not handled.");
         }
     }
 
@@ -244,12 +249,11 @@ public class MainActivity extends AppCompatActivity
                 bindRecyclerView(cursor);
                 break;
             default:
-                throw new IllegalArgumentException("ID: "+ id + " not handled.");
+                throw new IllegalArgumentException("ID: " + id + " not handled.");
         }
+        getSupportLoaderManager().destroyLoader(id);
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
-    }
+    public void onLoaderReset(Loader<Cursor> loader) { }
 }
