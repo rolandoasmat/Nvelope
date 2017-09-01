@@ -9,8 +9,8 @@ import ckm.simple.sql_provider.annotation.SimpleSQLTable;
  */
 @SimpleSQLTable(table = "receipts", provider = "NvelopeProvider")
 public class Receipt {
-    @SimpleSQLColumn("name_of_location")
-    public String mNameOfLocation;
+    @SimpleSQLColumn("location")
+    public String mLocation;
 
     @SimpleSQLColumn("category")
     public String mCategory;
@@ -23,4 +23,14 @@ public class Receipt {
 
     @SimpleSQLColumn("amount")
     public double mAmount;
+
+    public Receipt() {}
+
+    public Receipt(String mLocation, String mCategory, String mMethodOfPayment, Date mDate, double mAmount) {
+        this.mLocation = mLocation;
+        this.mCategory = mCategory;
+        this.mMethodOfPayment = mMethodOfPayment;
+        this.mDate = mDate;
+        this.mAmount = mAmount;
+    }
 }
