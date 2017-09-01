@@ -1,16 +1,20 @@
 package com.rolandoasmat.nvelope;
 
 import android.content.Intent;
+import android.support.v4.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+
 import android.support.v7.widget.RecyclerView;
 
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -32,7 +36,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, LoaderCallbacks<Cursor> {
     @BindView(R.id.toolbar)
     protected Toolbar mToolbar;
 
@@ -48,6 +52,9 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.receipts_recycler_view)
     protected RecyclerView mReceiptsRecyclerView;
     protected ReceiptsAdapter mAdapter;
+
+    private final int FETCH_RECEIPTS = 0;
+    private final int FETCH_CATEGORIES = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +125,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void refreshPie() {
+        getSupportLoaderManager().initLoader(FETCH_CATEGORIES, null, this);
+    }
+
+    private void bindPie(Cursor cursor) {
+        List<Category> categories = CategoriesTable.getRows(cursor, false);
         List<PieEntry> entries = new ArrayList<>();
         entries.add(new PieEntry(18.5f, "Eating Out"));
         entries.add(new PieEntry(26.7f, "Groceries"));
@@ -181,4 +193,30 @@ public class MainActivity extends AppCompatActivity
         refreshPie();
     }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        switch(i) {
+            case FETCH_CATEGORIES:
+                return new CursorLoader(this, ReceiptsTable.CONTENT_URI, null, null, null, null);
+            default:
+                throw new IllegalArgumentException("no id handled!");
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        int id = loader.getId();
+        switch(id) {
+            case FETCH_CATEGORIES:
+                bindPie(cursor);
+                break;
+            default:
+                throw new IllegalArgumentException("ID: "+ id + " not handled.");
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
 }
