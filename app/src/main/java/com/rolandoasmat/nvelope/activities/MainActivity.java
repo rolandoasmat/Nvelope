@@ -30,6 +30,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.rolandoasmat.nvelope.GoogleAnalyticsManager;
 import com.rolandoasmat.nvelope.models.Category;
 import com.rolandoasmat.nvelope.models.PaymentMethod;
 import com.rolandoasmat.nvelope.R;
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity
         dbInit();
         setupPie();
         setupRecyclerView();
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        mFirebaseAnalytics = GoogleAnalyticsManager.getInstance(this);
     }
 
     private void setupFab() {

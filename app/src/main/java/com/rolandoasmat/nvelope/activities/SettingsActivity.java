@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.rolandoasmat.nvelope.GoogleAnalyticsManager;
 import com.rolandoasmat.nvelope.R;
 import com.rolandoasmat.nvelope.adapters.CategoriesAdapter;
 import com.rolandoasmat.nvelope.models.CategoriesTable;
@@ -37,7 +38,7 @@ public class SettingsActivity extends AppCompatActivity implements LoaderCallbac
         ButterKnife.bind(this);
 
         setupRecyclerView();
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        mFirebaseAnalytics = GoogleAnalyticsManager.getInstance(this);
     }
 
     private void setupRecyclerView() {
