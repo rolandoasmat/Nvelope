@@ -29,6 +29,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.rolandoasmat.nvelope.models.Category;
 import com.rolandoasmat.nvelope.models.PaymentMethod;
 import com.rolandoasmat.nvelope.R;
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity
     private final int REFRESH_UI = 9482;
     private final int REFRESH_DRAWER = 4935;
     private String mFilter = "";
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,12 +86,17 @@ public class MainActivity extends AppCompatActivity
         dbInit();
         setupPie();
         setupRecyclerView();
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
     private void setupFab() {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "New Receipt FAB");
+                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Button");
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
                 Intent intent = new Intent(MainActivity.this, NewReceiptActivity.class);
                 startActivity(intent);
             }
@@ -221,6 +228,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void chartPressed(View view) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Pie Chart");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Image");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
         if(mPieChart.getData() != null) {
             Intent intent = new Intent(this, PieDetailActivity.class);
             intent.putExtra("filter", mFilter);

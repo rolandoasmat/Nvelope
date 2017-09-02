@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.rolandoasmat.nvelope.models.CategoriesTable;
 import com.rolandoasmat.nvelope.R;
 import com.rolandoasmat.nvelope.models.Receipt;
@@ -45,6 +46,7 @@ public class NewReceiptActivity extends AppCompatActivity implements LoaderManag
     protected Toolbar mToolbar;
 
     private final int REFRESH_CATEGORIES_SPINNER = 3948;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,7 @@ public class NewReceiptActivity extends AppCompatActivity implements LoaderManag
         String formattedDate = Receipt.formatDate(mDate);
         mDateTextView.setText(formattedDate);
         setupCategoriesSpinner();
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
     private void setupCategoriesSpinner() {
@@ -79,6 +82,10 @@ public class NewReceiptActivity extends AppCompatActivity implements LoaderManag
     }
 
     public void onSave(View view) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Save Receipt");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Button");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
         String location = mLocation.getText().toString();
         if(location.equals("")) {
             showSnackBar(R.string.empty_location_field);
@@ -110,7 +117,11 @@ public class NewReceiptActivity extends AppCompatActivity implements LoaderManag
         onBackPressed();
     }
 
-    private void showSnackBar(int id){
+    private void showSnackBar(int id) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Empty field");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Button");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
         Snackbar.make(findViewById(R.id.coordinator_layout), id, Snackbar.LENGTH_LONG).show();
     }
 

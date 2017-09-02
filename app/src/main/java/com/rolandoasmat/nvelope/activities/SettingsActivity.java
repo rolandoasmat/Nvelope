@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.rolandoasmat.nvelope.R;
 import com.rolandoasmat.nvelope.adapters.CategoriesAdapter;
 import com.rolandoasmat.nvelope.models.CategoriesTable;
@@ -27,6 +28,7 @@ public class SettingsActivity extends AppCompatActivity implements LoaderCallbac
     protected CategoriesAdapter mAdapter;
 
     private final int FETCH_CATEGORIES = 4949;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,7 @@ public class SettingsActivity extends AppCompatActivity implements LoaderCallbac
         ButterKnife.bind(this);
 
         setupRecyclerView();
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
     private void setupRecyclerView() {
@@ -95,11 +98,19 @@ public class SettingsActivity extends AppCompatActivity implements LoaderCallbac
                 // User clicked OK button
                 getContentResolver().delete(CategoriesTable.CONTENT_URI,"name == ?", new String[]{category});
                 refreshUI();
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Removed a category");
+                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Button");
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
             }
         });
         builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User cancelled the dialog
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "DID NOT remove a category");
+                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Button");
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
             }
         });
         AlertDialog dialog = builder.create();
