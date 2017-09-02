@@ -14,14 +14,6 @@
 
     <item android:title="@string/payment_method">
         <menu>
-            <item
-                android:id="@+id/nav_credit_card"
-                android:icon="@drawable/ic_credit_card_black"
-                android:title="Credit Card 1" />
-            <item
-                android:id="@+id/nav_debit_card"
-                android:icon="@drawable/ic_credit_card_black"
-                android:title="Debit Card 1" />
         </menu>
     </item>
 

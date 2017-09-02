@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 
 import android.support.v7.widget.RecyclerView;
 
+import android.view.SubMenu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -31,7 +32,9 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity
     protected DrawerLayout mDrawer;
 
     private final int REFRESH_UI = 9482;
+    private final int REFRESH_DRAWER = 4935;
     private String mFilter = "";
 
     @Override
@@ -88,8 +92,21 @@ public class MainActivity extends AppCompatActivity
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.setDrawerListener(toggle);
-        // todo get navigation view instead. and getMenu
         toggle.syncState();
+
+    }
+
+    private void bindDrawer(Cursor cursor) {
+        List<Receipt> receipts = ReceiptsTable.getRows(cursor, false);
+        Set<String> set = new HashSet<>();
+        for(Receipt receipt: receipts) {
+            set.add(receipt.mMethodOfPayment);
+        }
+        SubMenu subMenu = mNavigationView.getMenu().getItem(2).getSubMenu();
+        subMenu.clear();
+        for(String paymentMethod: set) {
+            subMenu.add(paymentMethod);
+        }
     }
 
     private void dbInit() {
@@ -134,6 +151,7 @@ public class MainActivity extends AppCompatActivity
             mToolbar.setTitle(mFilter);
         }
         getSupportLoaderManager().initLoader(REFRESH_UI, null, this);
+        getSupportLoaderManager().initLoader(REFRESH_DRAWER, null, this);
     }
 
     private void bindPie(Cursor cursor) {
@@ -238,6 +256,8 @@ public class MainActivity extends AppCompatActivity
                     String[] filter = new String[]{"\'" + mFilter + "\'"};
                     return new CursorLoader(this, ReceiptsTable.CONTENT_URI, null, " category IS ? ", filter , null);
                 }
+            case REFRESH_DRAWER:
+                return new CursorLoader(this, ReceiptsTable.CONTENT_URI, null, null, null, null);
             default:
                 throw new IllegalArgumentException("ID: " + i + " not handled.");
         }
@@ -250,6 +270,9 @@ public class MainActivity extends AppCompatActivity
             case REFRESH_UI:
                 bindPie(cursor);
                 bindRecyclerView(cursor);
+                break;
+            case REFRESH_DRAWER:
+                bindDrawer(cursor);
                 break;
             default:
                 throw new IllegalArgumentException("ID: " + id + " not handled.");
