@@ -27,7 +27,8 @@
 
         <provider
             android:name=".provider.NvelopeProvider"
-            android:authorities="com.rolando.asmat.nvelope.provider" />
+            android:authorities="com.rolando.asmat.nvelope.provider"
+            android:exported="true"/>
 
         <activity
             android:name=".activities.PieDetailActivity"
@@ -62,6 +63,9 @@
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
+
+        <service android:name=".widget.GridWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
     </application>
 
 </manifest>

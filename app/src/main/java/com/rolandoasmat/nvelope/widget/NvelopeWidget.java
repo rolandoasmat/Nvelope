@@ -3,6 +3,7 @@ package com.rolandoasmat.nvelope.widget;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
 import android.widget.RemoteViews;
 
 import com.rolandoasmat.nvelope.R;
@@ -33,7 +34,9 @@ public class NvelopeWidget extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         CharSequence widgetText = NvelopeWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
         // Construct the RemoteViews object
+        Intent intent = new Intent(context, GridWidgetService.class);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.nvelope_widget);
+        views.setRemoteAdapter(R.id.widget_grid_view, intent);
         views.setTextViewText(R.id.appwidget_text, widgetText);
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
