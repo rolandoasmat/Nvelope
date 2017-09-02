@@ -120,16 +120,18 @@ public class PieDetailActivity extends AppCompatActivity implements LoaderCallba
 
                 // List
                 for(Receipt receipt : receipts) {
-                    TextView tv = new TextView(this);
-                    tv.setLayoutParams(params);
-                    tv.setText(receipt.mLocation+"\n"+"$" + receipt.mAmount + " on " + receipt.dateFormatted());
-                    tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
-                    tv.setTextColor(Color.WHITE);
-                    linearLayout.addView(tv);
-                    View margin = new View(this);
-                    margin.setLayoutParams(params);
-                    margin.setMinimumHeight(dps);
-                    linearLayout.addView(margin);
+                    if(receipt.mCategory.equals(method)) {
+                        TextView tv = new TextView(this);
+                        tv.setLayoutParams(params);
+                        tv.setText(receipt.mLocation+"\n"+"$" + receipt.mAmount + " on " + receipt.dateFormatted());
+                        tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+                        tv.setTextColor(Color.WHITE);
+                        linearLayout.addView(tv);
+                        View margin = new View(this);
+                        margin.setLayoutParams(params);
+                        margin.setMinimumHeight(dps);
+                        linearLayout.addView(margin);
+                    }
                 }
                 mLinearLayout.addView(linearLayout);
                 View margin = new View(this);
