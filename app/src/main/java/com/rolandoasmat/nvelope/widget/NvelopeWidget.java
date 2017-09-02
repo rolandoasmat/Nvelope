@@ -6,29 +6,12 @@ import android.content.Context;
 import android.widget.RemoteViews;
 
 import com.rolandoasmat.nvelope.R;
-import com.rolandoasmat.nvelope.widget.NvelopeWidgetConfigureActivity;
 
-/**
- * Implementation of App Widget functionality.
- * App Widget Configuration implemented in {@link NvelopeWidgetConfigureActivity NvelopeWidgetConfigureActivity}
- */
 public class NvelopeWidget extends AppWidgetProvider {
-
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
-
-        CharSequence widgetText = NvelopeWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
-        // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.nvelope_widget);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
-
-        // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetId, views);
-    }
+    public static final String INTENT_EXTRA_PAYMENT_METHOD = "payment_method";
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
@@ -36,20 +19,23 @@ public class NvelopeWidget extends AppWidgetProvider {
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
-        // When the user deletes the widget, delete the preference associated with it.
         for (int appWidgetId : appWidgetIds) {
             NvelopeWidgetConfigureActivity.deleteTitlePref(context, appWidgetId);
         }
     }
 
     @Override
-    public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
-    }
+    public void onEnabled(Context context) { }
 
     @Override
-    public void onDisabled(Context context) {
-        // Enter relevant functionality for when the last widget is disabled
+    public void onDisabled(Context context) { }
+
+    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
+        CharSequence widgetText = NvelopeWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
+        // Construct the RemoteViews object
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.nvelope_widget);
+        views.setTextViewText(R.id.appwidget_text, widgetText);
+        // Instruct the widget manager to update the widget
+        appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 }
-
