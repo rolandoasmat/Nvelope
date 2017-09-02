@@ -34,7 +34,7 @@ import com.rolandoasmat.nvelope.models.PaymentMethod;
 import com.rolandoasmat.nvelope.R;
 import com.rolandoasmat.nvelope.models.Payment_methodsTable;
 import com.rolandoasmat.nvelope.models.Receipt;
-import com.rolandoasmat.nvelope.ReceiptsAdapter;
+import com.rolandoasmat.nvelope.adapters.ReceiptsAdapter;
 import com.rolandoasmat.nvelope.models.CategoriesTable;
 import com.rolandoasmat.nvelope.models.ReceiptsTable;
 
