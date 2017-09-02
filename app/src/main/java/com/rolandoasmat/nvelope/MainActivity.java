@@ -156,6 +156,10 @@ public class MainActivity extends AppCompatActivity
 
     private void bindPie(Cursor cursor) {
         List<Receipt> receipts = ReceiptsTable.getRows(cursor, false);
+        if(receipts.size() == 0){
+            mPieChart.clear();
+            return;
+        }
         HashMap<String, Double> map = analyzeReceipts(receipts);
 
         List<PieEntry> entries = new ArrayList<>();
@@ -206,6 +210,14 @@ public class MainActivity extends AppCompatActivity
     private void bindRecyclerView(Cursor cursor) {
         List<Receipt> receipts = ReceiptsTable.getRows(cursor, false);
         mAdapter.updateData(receipts);
+    }
+
+    public void chartPressed(View view) {
+        if(mPieChart.getData() != null) {
+            Intent intent = new Intent(this, PieDetailActivity.class);
+            intent.putExtra("filter", mFilter);
+            startActivity(intent);
+        }
     }
 
     @Override

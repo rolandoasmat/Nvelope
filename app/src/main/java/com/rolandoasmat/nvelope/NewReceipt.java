@@ -45,14 +45,13 @@ public class NewReceipt extends AppCompatActivity implements LoaderManager.Loade
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_receipt);
         ButterKnife.bind(this);
+
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-
         mDate = Calendar.getInstance().getTime();
         String formattedDate = Receipt.formatDate(mDate);
         mDateTextView.setText(formattedDate);
-
         setupCategoriesSpinner();
     }
 
