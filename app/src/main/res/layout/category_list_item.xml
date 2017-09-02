@@ -3,17 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/activity_vertical_margin">
 
     <TextView
         android:id="@+id/category_label"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
 
     <ImageButton
         android:id="@+id/delete_image_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:srcCompat="@drawable/ic_remove_circle"/>
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_gravity="end"
+        android:src="@drawable/ic_remove_circle"/>
 
 </LinearLayout>
