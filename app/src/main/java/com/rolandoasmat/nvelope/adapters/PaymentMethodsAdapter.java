@@ -23,7 +23,7 @@ public class PaymentMethodsAdapter  extends RecyclerView.Adapter<PaymentMethodsA
     private final PaymentMethodClickListener mClickHandler;
 
     public interface PaymentMethodClickListener {
-        void onClick(String category);
+        void onClick(String paymentMethod);
     }
 
     public PaymentMethodsAdapter(PaymentMethodClickListener onClickListener) {
@@ -65,16 +65,16 @@ public class PaymentMethodsAdapter  extends RecyclerView.Adapter<PaymentMethodsA
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            String category = mPaymentMethods.get(adapterPosition).mName;
-            mClickHandler.onClick(category);
+            String paymentMethod = mPaymentMethods.get(adapterPosition).mName;
+            mClickHandler.onClick(paymentMethod);
         }
 
         private TextView getTextView(View view, int id) {
             return (TextView) view.findViewById(id);
         }
 
-        public void bind(PaymentMethod category) {
-            mLabel.setText(category.mName);
+        public void bind(PaymentMethod paymentMethod) {
+            mLabel.setText(paymentMethod.mName);
         }
     }
 }

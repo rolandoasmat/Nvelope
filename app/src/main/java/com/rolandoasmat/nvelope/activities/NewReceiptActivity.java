@@ -77,7 +77,9 @@ public class NewReceiptActivity extends AppCompatActivity implements LoaderManag
         List<PaymentMethod> methods = Payment_methodsTable.getRows(cursor,false);
         ArrayList<String> strings = new ArrayList<>();
         for(PaymentMethod method: methods){
-            strings.add(method.mName);
+            if(!strings.contains(method)){
+                strings.add(method.mName);
+            }
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line,strings);
         mMethodOfPayment.setAdapter(adapter);

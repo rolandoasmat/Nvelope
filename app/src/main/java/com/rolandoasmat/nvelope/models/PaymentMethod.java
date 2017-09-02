@@ -18,4 +18,17 @@ public class PaymentMethod {
     public PaymentMethod(String name) {
         this.mName = name;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        } else {
+            if( (((PaymentMethod)obj).mName).equals(mName) ) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
 }

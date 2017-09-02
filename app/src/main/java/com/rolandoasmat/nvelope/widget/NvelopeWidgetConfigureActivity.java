@@ -18,6 +18,7 @@ import com.rolandoasmat.nvelope.adapters.PaymentMethodsAdapter;
 import com.rolandoasmat.nvelope.models.PaymentMethod;
 import com.rolandoasmat.nvelope.models.Payment_methodsTable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -107,8 +108,14 @@ public class NvelopeWidgetConfigureActivity extends AppCompatActivity
     }
 
     private void bindRecyclerView(Cursor cursor) {
-        List<PaymentMethod> receipts = Payment_methodsTable.getRows(cursor, false);
-        mAdapter.updateData(receipts);
+        List<PaymentMethod> paymentMethods = Payment_methodsTable.getRows(cursor, false);
+        List<PaymentMethod> filtered = new ArrayList<>();
+        for(PaymentMethod method : paymentMethods) {
+            if(!filtered.contains(method)){
+                filtered.add(method);
+            }
+        }
+        mAdapter.updateData(filtered);
     }
 
     @Override

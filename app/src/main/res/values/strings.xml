@@ -19,7 +19,7 @@
     <string name="empty_method_of_payment_field">Empty Method of Payment Field</string>
     <string name="empty_amount_field">Empty Amount Field</string>
 
-    <string name="title_activity_pie_detail">Breakdown</string>
+    <string name="title_activity_pie_detail">Category Breakdown</string>
     <string name="title_activity_settings">Settings</string>
 
     <!--Nav Drawer-->
