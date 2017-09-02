@@ -1,4 +1,4 @@
-package com.rolandoasmat.nvelope;
+package com.rolandoasmat.nvelope.models;
 
 import ckm.simple.sql_provider.annotation.SimpleSQLColumn;
 import ckm.simple.sql_provider.annotation.SimpleSQLTable;
@@ -7,15 +7,15 @@ import ckm.simple.sql_provider.annotation.SimpleSQLTable;
  * Created by rolandoasmat on 9/1/17.
  */
 
-@SimpleSQLTable(table = "categories", provider = "NvelopeProvider")
-public class Category {
+@SimpleSQLTable(table = "payment_methods", provider = "NvelopeProvider")
+public class PaymentMethod {
 
     @SimpleSQLColumn("name")
     public String mName;
 
-    public Category() { }
+    public PaymentMethod() { }
 
-    public Category(String name) {
+    public PaymentMethod(String name) {
         this.mName = name;
     }
 }

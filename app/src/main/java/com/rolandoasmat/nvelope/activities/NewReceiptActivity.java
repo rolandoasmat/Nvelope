@@ -1,4 +1,4 @@
-package com.rolandoasmat.nvelope;
+package com.rolandoasmat.nvelope.activities;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -15,6 +15,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.rolandoasmat.nvelope.models.CategoriesTable;
+import com.rolandoasmat.nvelope.R;
+import com.rolandoasmat.nvelope.models.Receipt;
+import com.rolandoasmat.nvelope.models.ReceiptsTable;
+import com.rolandoasmat.nvelope.models.Category;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,7 +29,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NewReceipt extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class NewReceiptActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     @BindView(R.id.location_edit_text)
     protected EditText mLocation;
     @BindView(R.id.category_spinner)

@@ -1,4 +1,4 @@
-package com.rolandoasmat.nvelope;
+package com.rolandoasmat.nvelope.activities;
 
 import android.content.Intent;
 import android.support.v4.content.Loader;
@@ -29,6 +29,14 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.rolandoasmat.nvelope.models.Category;
+import com.rolandoasmat.nvelope.models.PaymentMethod;
+import com.rolandoasmat.nvelope.R;
+import com.rolandoasmat.nvelope.models.Payment_methodsTable;
+import com.rolandoasmat.nvelope.models.Receipt;
+import com.rolandoasmat.nvelope.ReceiptsAdapter;
+import com.rolandoasmat.nvelope.models.CategoriesTable;
+import com.rolandoasmat.nvelope.models.ReceiptsTable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,7 +90,7 @@ public class MainActivity extends AppCompatActivity
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, NewReceipt.class);
+                Intent intent = new Intent(MainActivity.this, NewReceiptActivity.class);
                 startActivity(intent);
             }
         });

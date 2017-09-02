@@ -1,4 +1,4 @@
-package com.rolandoasmat.nvelope;
+package com.rolandoasmat.nvelope.models;
 
 import java.text.DateFormat;
 import java.util.Date;

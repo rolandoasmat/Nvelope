@@ -1,6 +1,5 @@
-package com.rolandoasmat.nvelope;
+package com.rolandoasmat.nvelope.activities;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -27,6 +26,9 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.rolandoasmat.nvelope.R;
+import com.rolandoasmat.nvelope.models.Receipt;
+import com.rolandoasmat.nvelope.models.ReceiptsTable;
 
 import java.util.ArrayList;
 import java.util.HashMap;

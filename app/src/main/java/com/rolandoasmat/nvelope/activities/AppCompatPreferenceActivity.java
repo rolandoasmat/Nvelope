@@ -1,4 +1,4 @@
-package com.rolandoasmat.nvelope;
+package com.rolandoasmat.nvelope.activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

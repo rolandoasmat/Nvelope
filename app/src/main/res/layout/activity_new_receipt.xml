@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/coordinator_layout"
-    tools:context="com.rolandoasmat.nvelope.NewReceipt">
+    tools:context="com.rolandoasmat.nvelope.activities.NewReceiptActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
