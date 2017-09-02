@@ -9,7 +9,6 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -54,9 +53,6 @@ public class NewReceiptActivity extends AppCompatActivity implements LoaderManag
     private final int REFRESH_CATEGORIES_SPINNER = 3948;
     private FirebaseAnalytics mFirebaseAnalytics;
     private String mLocation;
-    private static final String[] COUNTRIES = new String[] {
-            "Belgium", "France", "Italy", "Germany", "Spain"
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +124,7 @@ public class NewReceiptActivity extends AppCompatActivity implements LoaderManag
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
         if(mLocation == null) {
-            showSnackBar(R.string.empty_amount_field);
+            showSnackBar(R.string.empty_location_field);
             return;
         }
 
@@ -151,11 +147,11 @@ public class NewReceiptActivity extends AppCompatActivity implements LoaderManag
 
 
         String amountText = mAmount.getText().toString();
-        if(amountText.equals("")) {
+        if(amountText.equals("$0.00")) {
             showSnackBar(R.string.empty_amount_field);
             return;
         }
-        double amount = Double.parseDouble(amountText);
+        double amount = Double.parseDouble(amountText.replace("$",""));
 
         Receipt receipt = new Receipt(mLocation, category, methodOfPayment, mDate, amount);
         getContentResolver().insert(ReceiptsTable.CONTENT_URI, ReceiptsTable.getContentValues(receipt, false));

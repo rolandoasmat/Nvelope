@@ -44,6 +44,7 @@ dependencies {
     compile 'ckm.simple:simple_sql_provider_processor:1.0.6'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     compile 'com.jakewharton:butterknife:8.8.1'
+    compile 'com.github.BlacKCaT27:CurrencyEditText:2.0.1'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }

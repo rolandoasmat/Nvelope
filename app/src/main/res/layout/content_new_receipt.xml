@@ -40,10 +40,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/payment_method" />
+        <!--Limit input to letters and numbers and 40 char max-->
         <AutoCompleteTextView
             android:id="@+id/payment_method_auto_complete"
             style="@style/FullWidthEditText"
             android:dropDownWidth="match_parent"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789 "
+            android:maxLength="40"
+            android:lines="1"
+            android:maxLines="1"
             android:hint="@string/payment_method" />
 
 
@@ -66,7 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/amount" />
-        <EditText
+        <com.blackcat.currencyedittext.CurrencyEditText
             android:id="@+id/amount_edit_text"
             style="@style/FullWidthEditText"
             android:hint="@string/amount"
