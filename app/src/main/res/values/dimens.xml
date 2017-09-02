@@ -9,5 +9,6 @@
     <dimen name="padding">8dp</dimen>
     <dimen name="large_margin">64dp</dimen>
     <dimen name="pie_height">200dp</dimen>
+    <dimen name="pie_height_tall">400dp</dimen>
     <dimen name="date_label_size">16sp</dimen>
 </resources>

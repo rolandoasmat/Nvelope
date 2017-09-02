@@ -10,8 +10,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
 
 import com.rolandoasmat.nvelope.R;
 import com.rolandoasmat.nvelope.adapters.CategoriesAdapter;
