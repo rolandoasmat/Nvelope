@@ -2,6 +2,7 @@ package com.rolandoasmat.nvelope;
 
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
@@ -9,7 +10,6 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.CardView;
 
 import android.util.TypedValue;
 import android.widget.LinearLayout;
@@ -19,8 +19,6 @@ import android.widget.TextView;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.DataSet;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -43,7 +41,7 @@ public class PieDetailActivity extends AppCompatActivity implements LoaderCallba
     protected PieChart mPieChart;
 
     @BindView(R.id.details_linear_layout)
-    protected LinearLayout mConstraintLayout;
+    protected LinearLayout mLinearLayout;
 
     private String mFilter;
     private final int REFRESH_UI = 5938;
@@ -87,75 +85,47 @@ public class PieDetailActivity extends AppCompatActivity implements LoaderCallba
 
     private void createCards(Cursor cursor) {
         List<Receipt> receipts = ReceiptsTable.getRows(cursor, false);
-        if(receipts.size() != 0){
-            HashMap<String, Double> map = analyzeReceipts(receipts);
+        if(receipts.size() != 0) {
             IPieDataSet dataSet = mPieChart.getData().getDataSet();
             for(int i = 0; i <  dataSet.getEntryCount(); i++) {
                 PieEntry entry = dataSet.getEntryForIndex(i);
                 String method = entry.getLabel();
                 int color = dataSet.getColor(i);
 
-                CardView card = new CardView(this);
-
-                // Set the CardView layoutParams
+                // Create UI
                 LayoutParams params = new LayoutParams(
                         LayoutParams.MATCH_PARENT,
                         LayoutParams.WRAP_CONTENT
                 );
-                card.setLayoutParams(params);
+                LinearLayout linearLayout = new LinearLayout(this);
+                linearLayout.setOrientation(LinearLayout.VERTICAL);
+                linearLayout.setLayoutParams(params);
+                linearLayout.setBackgroundColor(color);
+                float scale = getResources().getDisplayMetrics().density;
+                int dps = (int) (8.0f*scale + 0.5f);
+                linearLayout.setPadding(dps, dps, dps, dps);
 
-                // Set CardView corner radius
-                card.setRadius(9);
+                // Title
+                TextView title = new TextView(this);
+                title.setLayoutParams(params);
+                title.setText(method.toUpperCase());
+                title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
+                title.setTextColor(Color.WHITE);
+                title.setTypeface(null, Typeface.BOLD);
+                linearLayout.addView(title);
 
-                // Set cardView content padding
-                card.setContentPadding(15, 15, 15, 15);
-
-                // Set a background color for CardView
-//                card.setCardBackgroundColor(Color.parseColor("#FFC6D6C3"));
-
-                // Set the CardView maximum elevation
-                card.setMaxCardElevation(15);
-
-                // Set CardView elevation
-                card.setCardElevation(9);
-
-                // Initialize a new TextView to put in CardView
-                TextView tv = new TextView(this);
-                tv.setLayoutParams(params);
-                tv.setText(method);
-                tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
-                tv.setTextColor(Color.RED);
-
-                TextView tv1 = new TextView(this);
-                tv.setLayoutParams(params);
-                tv.setText(method);
-                tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
-                tv.setTextColor(Color.RED);
-
-                TextView tv2 = new TextView(this);
-                tv.setLayoutParams(params);
-                tv.setText(method);
-                tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
-                tv.setTextColor(Color.RED);
-
-                TextView tv3 = new TextView(this);
-                tv.setLayoutParams(params);
-                tv.setText(method + "\n\n" + "test");
-                tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
-                tv.setTextColor(color);
-
-                // Put the TextView in CardView
-                card.addView(tv);
-                card.addView(tv1);
-                card.addView(tv2);
-                card.addView(tv3);
-
-
-                // Finally, add the CardView in root layout
-                mConstraintLayout.addView(card);
+                // List
+                for(Receipt receipt : receipts) {
+                    TextView tv = new TextView(this);
+                    tv.setLayoutParams(params);
+                    tv.setText("$" + receipt.mAmount + " spent at " + receipt.mLocation + " on " + receipt.dateFormatted());
+                    tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+                    tv.setTextColor(Color.WHITE);
+                    linearLayout.addView(tv);
+                }
+                mLinearLayout.addView(linearLayout);
             }
         }
-
     }
 
     private void bindPie(Cursor cursor) {
