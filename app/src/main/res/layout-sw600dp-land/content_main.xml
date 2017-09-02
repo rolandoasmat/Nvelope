@@ -6,29 +6,24 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:descendantFocusability="blocksDescendants">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_marginBottom="@dimen/large_margin">
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/large_margin"
+        android:baselineAligned="false">
 
-            <include layout="@layout/pie_chart"
-                android:id="@+id/chart"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/pie_height_tall"
-                android:layout_weight="2"/>
+        <include layout="@layout/pie_chart"
+            android:id="@+id/chart"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/pie_height_tall"
+            android:layout_weight="2"/>
 
-            <include layout="@layout/receipts_recycler_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"/>
+        <include layout="@layout/receipts_recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"/>
 
-        </LinearLayout>
-
-    </FrameLayout>
+    </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>
