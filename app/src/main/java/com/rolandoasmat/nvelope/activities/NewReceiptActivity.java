@@ -9,12 +9,17 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.rolandoasmat.nvelope.models.CategoriesTable;
 import com.rolandoasmat.nvelope.R;
@@ -31,8 +36,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class NewReceiptActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
-    @BindView(R.id.location_edit_text)
-    protected EditText mLocation;
     @BindView(R.id.category_spinner)
     protected Spinner mCategory;
     @BindView(R.id.payment_method_edit_text)
@@ -47,6 +50,7 @@ public class NewReceiptActivity extends AppCompatActivity implements LoaderManag
 
     private final int REFRESH_CATEGORIES_SPINNER = 3948;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private String mLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,24 @@ public class NewReceiptActivity extends AppCompatActivity implements LoaderManag
         mDateTextView.setText(formattedDate);
         setupCategoriesSpinner();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        setupAutocomplete();
+    }
+
+    private void setupAutocomplete(){
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                mLocation = place.getName().toString();
+            }
+
+            @Override
+            public void onError(Status status) {
+                showSnackBar(status.getStatusMessage());
+            }
+        });
     }
 
     private void setupCategoriesSpinner() {
@@ -86,8 +108,13 @@ public class NewReceiptActivity extends AppCompatActivity implements LoaderManag
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Save Receipt");
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Button");
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
-        String location = mLocation.getText().toString();
-        if(location.equals("")) {
+
+        if(mLocation == null) {
+            showSnackBar(R.string.empty_amount_field);
+            return;
+        }
+
+        if(mLocation.equals("")) {
             showSnackBar(R.string.empty_location_field);
             return;
         }
@@ -112,9 +139,17 @@ public class NewReceiptActivity extends AppCompatActivity implements LoaderManag
         }
         double amount = Double.parseDouble(amountText);
 
-        Receipt receipt = new Receipt(location, category, methodOfPayment, mDate, amount);
+        Receipt receipt = new Receipt(mLocation, category, methodOfPayment, mDate, amount);
         getContentResolver().insert(ReceiptsTable.CONTENT_URI, ReceiptsTable.getContentValues(receipt, false));
         onBackPressed();
+    }
+
+    private void showSnackBar(String message) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Places search");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Search");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        Snackbar.make(findViewById(R.id.coordinator_layout), message, Snackbar.LENGTH_LONG).show();
     }
 
     private void showSnackBar(int id) {
