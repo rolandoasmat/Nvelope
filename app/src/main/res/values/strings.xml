@@ -28,4 +28,10 @@
 
     <!--Widget-->
     <string name="configure">Select a Payment Method:</string>
+
+    <!--A11y-->
+    <string name="a11y_pie_chart">Pie Chart Image Button</string>
+    <string name="a11y_new_receipt">New Receipt</string>
+    <string name="a11y_delete_category"></string>
+
 </resources>
