@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -23,6 +24,8 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.rolandoasmat.nvelope.models.CategoriesTable;
 import com.rolandoasmat.nvelope.R;
+import com.rolandoasmat.nvelope.models.PaymentMethod;
+import com.rolandoasmat.nvelope.models.Payment_methodsTable;
 import com.rolandoasmat.nvelope.models.Receipt;
 import com.rolandoasmat.nvelope.models.ReceiptsTable;
 import com.rolandoasmat.nvelope.models.Category;
@@ -38,8 +41,8 @@ import butterknife.ButterKnife;
 public class NewReceiptActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     @BindView(R.id.category_spinner)
     protected Spinner mCategory;
-    @BindView(R.id.payment_method_edit_text)
-    protected EditText mMethodOfPayment;
+    @BindView(R.id.payment_method_auto_complete)
+    protected AutoCompleteTextView mMethodOfPayment;
     protected Date mDate;
     @BindView(R.id.date_text_view)
     protected TextView mDateTextView;
@@ -51,6 +54,9 @@ public class NewReceiptActivity extends AppCompatActivity implements LoaderManag
     private final int REFRESH_CATEGORIES_SPINNER = 3948;
     private FirebaseAnalytics mFirebaseAnalytics;
     private String mLocation;
+    private static final String[] COUNTRIES = new String[] {
+            "Belgium", "France", "Italy", "Germany", "Spain"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +73,18 @@ public class NewReceiptActivity extends AppCompatActivity implements LoaderManag
         setupCategoriesSpinner();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         setupAutocomplete();
+        setupPaymentMethodTextField();
+    }
+    private void setupPaymentMethodTextField() {
+        Cursor cursor = getContentResolver().query(Payment_methodsTable.CONTENT_URI,null,null,null,null);
+        //multiple rows
+        List<PaymentMethod> methods = Payment_methodsTable.getRows(cursor,false);
+        ArrayList<String> strings = new ArrayList<>();
+        for(PaymentMethod method: methods){
+            strings.add(method.mName);
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line,strings);
+        mMethodOfPayment.setAdapter(adapter);
     }
 
     private void setupAutocomplete(){
@@ -141,6 +159,10 @@ public class NewReceiptActivity extends AppCompatActivity implements LoaderManag
 
         Receipt receipt = new Receipt(mLocation, category, methodOfPayment, mDate, amount);
         getContentResolver().insert(ReceiptsTable.CONTENT_URI, ReceiptsTable.getContentValues(receipt, false));
+
+        PaymentMethod method = new PaymentMethod(methodOfPayment);
+        getContentResolver().insert(Payment_methodsTable.CONTENT_URI, Payment_methodsTable.getContentValues(method, false));
+
         onBackPressed();
     }
 

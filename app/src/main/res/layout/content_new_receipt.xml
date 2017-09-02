@@ -40,9 +40,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/payment_method" />
-        <EditText
-            android:id="@+id/payment_method_edit_text"
+        <AutoCompleteTextView
+            android:id="@+id/payment_method_auto_complete"
             style="@style/FullWidthEditText"
+            android:dropDownWidth="match_parent"
             android:hint="@string/payment_method" />
 
 

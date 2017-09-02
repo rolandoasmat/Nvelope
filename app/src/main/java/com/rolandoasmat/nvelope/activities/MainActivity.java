@@ -139,9 +139,7 @@ public class MainActivity extends AppCompatActivity
             getContentResolver().insert(CategoriesTable.CONTENT_URI, CategoriesTable.getContentValues(new Category("Groceries"), false));
             getContentResolver().insert(CategoriesTable.CONTENT_URI, CategoriesTable.getContentValues(new Category("Entertainment"), false));
             getContentResolver().insert(CategoriesTable.CONTENT_URI, CategoriesTable.getContentValues(new Category("Other"), false));
-            // Initialize default payment methods
-            getContentResolver().insert(Payment_methodsTable.CONTENT_URI, Payment_methodsTable.getContentValues(new PaymentMethod("WF Credit Card"), false));
-            getContentResolver().insert(Payment_methodsTable.CONTENT_URI, Payment_methodsTable.getContentValues(new PaymentMethod("BoA Credit Card"), false));
+
         }
     }
 
