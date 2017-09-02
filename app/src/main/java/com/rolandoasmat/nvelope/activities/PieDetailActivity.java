@@ -122,12 +122,20 @@ public class PieDetailActivity extends AppCompatActivity implements LoaderCallba
                 for(Receipt receipt : receipts) {
                     TextView tv = new TextView(this);
                     tv.setLayoutParams(params);
-                    tv.setText("$" + receipt.mAmount + " spent at " + receipt.mLocation + " on " + receipt.dateFormatted());
+                    tv.setText(receipt.mLocation+"\n"+"$" + receipt.mAmount + " on " + receipt.dateFormatted());
                     tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
                     tv.setTextColor(Color.WHITE);
                     linearLayout.addView(tv);
+                    View margin = new View(this);
+                    margin.setLayoutParams(params);
+                    margin.setMinimumHeight(dps);
+                    linearLayout.addView(margin);
                 }
                 mLinearLayout.addView(linearLayout);
+                View margin = new View(this);
+                margin.setLayoutParams(params);
+                margin.setMinimumHeight(dps);
+                mLinearLayout.addView(margin);
             }
         }
     }
