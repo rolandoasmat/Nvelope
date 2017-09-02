@@ -253,8 +253,8 @@ public class MainActivity extends AppCompatActivity
                 if(mFilter.equals("")) {
                     return new CursorLoader(this, ReceiptsTable.CONTENT_URI, null, null, null, null);
                 } else {
-                    String[] filter = new String[]{"\'" + mFilter + "\'"};
-                    return new CursorLoader(this, ReceiptsTable.CONTENT_URI, null, " category IS ? ", filter , null);
+                    String[] filter = new String[]{mFilter};
+                    return new CursorLoader(this, ReceiptsTable.CONTENT_URI, null, " method_of_payment == ? ", filter , null);
                 }
             case REFRESH_DRAWER:
                 return new CursorLoader(this, ReceiptsTable.CONTENT_URI, null, null, null, null);
