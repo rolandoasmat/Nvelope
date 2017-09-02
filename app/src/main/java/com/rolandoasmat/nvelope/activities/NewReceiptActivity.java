@@ -69,7 +69,9 @@ public class NewReceiptActivity extends AppCompatActivity implements LoaderManag
         List<Category> categoriesList = CategoriesTable.getRows(cursor, false);
         ArrayList<String> categoriesArray = new ArrayList<>();
         for(Category category: categoriesList) {
-            categoriesArray.add(category.mName);
+            if(!categoriesArray.contains(category.mName)) {
+                categoriesArray.add(category.mName);
+            }
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categoriesArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
