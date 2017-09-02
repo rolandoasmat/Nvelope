@@ -1,4 +1,4 @@
-package com.rolandoasmat.nvelope;
+package com.rolandoasmat.nvelope.widget;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
@@ -9,12 +9,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import com.rolandoasmat.nvelope.R;
+
 /**
  * The configuration screen for the {@link NvelopeWidget NvelopeWidget} AppWidget.
  */
 public class NvelopeWidgetConfigureActivity extends Activity {
 
-    private static final String PREFS_NAME = "com.rolandoasmat.nvelope.NvelopeWidget";
+    private static final String PREFS_NAME = "com.rolandoasmat.nvelope.widget.NvelopeWidget";
     private static final String PREF_PREFIX_KEY = "appwidget_";
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     EditText mAppWidgetText;

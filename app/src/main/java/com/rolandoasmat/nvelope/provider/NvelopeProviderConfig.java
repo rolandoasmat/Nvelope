@@ -1,4 +1,4 @@
-package com.rolandoasmat.nvelope;
+package com.rolandoasmat.nvelope.provider;
 
 import ckm.simple.sql_provider.UpgradeScript;
 import ckm.simple.sql_provider.annotation.ProviderConfig;

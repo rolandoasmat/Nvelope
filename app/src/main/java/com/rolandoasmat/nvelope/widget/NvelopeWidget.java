@@ -1,9 +1,12 @@
-package com.rolandoasmat.nvelope;
+package com.rolandoasmat.nvelope.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.widget.RemoteViews;
+
+import com.rolandoasmat.nvelope.R;
+import com.rolandoasmat.nvelope.widget.NvelopeWidgetConfigureActivity;
 
 /**
  * Implementation of App Widget functionality.

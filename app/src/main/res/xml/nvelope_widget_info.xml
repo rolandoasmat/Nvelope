@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:configure="com.rolandoasmat.nvelope.NvelopeWidgetConfigureActivity"
+    android:configure="com.rolandoasmat.nvelope.widget.NvelopeWidgetConfigureActivity"
     android:initialKeyguardLayout="@layout/nvelope_widget"
     android:initialLayout="@layout/nvelope_widget"
     android:minHeight="180dp"
