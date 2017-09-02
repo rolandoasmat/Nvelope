@@ -1,5 +1,6 @@
 package com.rolandoasmat.nvelope;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -12,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
@@ -207,4 +209,6 @@ public class PieDetailActivity extends AppCompatActivity implements LoaderCallba
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) { }
+
+    public void chartPressed(View view) { }
 }
