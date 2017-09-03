@@ -1,12 +1,15 @@
 package com.rolandoasmat.nvelope.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 
 import android.view.SubMenu;
@@ -30,17 +33,20 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.rolandoasmat.nvelope.GoogleAnalyticsManager;
+import com.rolandoasmat.nvelope.managers.GoogleAnalyticsManager;
+import com.rolandoasmat.nvelope.managers.QuotesManager;
+import com.rolandoasmat.nvelope.utils.NetworkUtils;
 import com.rolandoasmat.nvelope.models.Category;
-import com.rolandoasmat.nvelope.models.PaymentMethod;
 import com.rolandoasmat.nvelope.R;
-import com.rolandoasmat.nvelope.models.Payment_methodsTable;
 import com.rolandoasmat.nvelope.models.Receipt;
 import com.rolandoasmat.nvelope.adapters.ReceiptsAdapter;
 import com.rolandoasmat.nvelope.models.CategoriesTable;
 import com.rolandoasmat.nvelope.models.ReceiptsTable;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -80,6 +86,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        setupQuoteOfTheDay();
         setSupportActionBar(mToolbar);
         setupFab();
         setupDrawer();
@@ -235,6 +242,50 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this, PieDetailActivity.class);
             intent.putExtra("filter", mFilter);
             startActivity(intent);
+        }
+    }
+
+    private void setupQuoteOfTheDay() {
+        SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        Date date = Calendar.getInstance().getTime();
+        String dayKey = DateFormat.getDateInstance(DateFormat.LONG).format(date) ;
+        boolean haveShown = settings.getBoolean(dayKey, false);
+        if(!haveShown) {
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean(dayKey, true);
+            editor.commit();
+            // Show quote
+            new QuoteOfTheDayTask().execute();
+        }
+    }
+    private class QuoteOfTheDayTask extends AsyncTask<Void, Void, String> {
+        @Override
+        protected String doInBackground(Void... voids) {
+            try {
+                return QuotesManager.getInspirationalQuoteOfTheDay();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if(result == null || result.equals("")) {
+                return;
+            }
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+            alertDialogBuilder.setTitle("Quote of the Day");
+            alertDialogBuilder
+                    .setMessage(result)
+                    .setCancelable(true)
+                    .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int id) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
         }
     }
 

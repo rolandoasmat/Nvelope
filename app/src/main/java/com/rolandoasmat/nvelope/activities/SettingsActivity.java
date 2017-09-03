@@ -12,7 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.rolandoasmat.nvelope.GoogleAnalyticsManager;
+import com.rolandoasmat.nvelope.managers.GoogleAnalyticsManager;
 import com.rolandoasmat.nvelope.R;
 import com.rolandoasmat.nvelope.adapters.CategoriesAdapter;
 import com.rolandoasmat.nvelope.models.CategoriesTable;

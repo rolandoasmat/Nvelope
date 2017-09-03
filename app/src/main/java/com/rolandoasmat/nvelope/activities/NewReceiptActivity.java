@@ -21,7 +21,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.rolandoasmat.nvelope.GoogleAnalyticsManager;
+import com.rolandoasmat.nvelope.managers.GoogleAnalyticsManager;
 import com.rolandoasmat.nvelope.models.CategoriesTable;
 import com.rolandoasmat.nvelope.R;
 import com.rolandoasmat.nvelope.models.PaymentMethod;
