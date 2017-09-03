@@ -24,7 +24,7 @@ public class PaymentMethod {
         if (obj == null) {
             return false;
         } else {
-            if( (((PaymentMethod)obj).mName).equals(mName) ) {
+            if( (String.valueOf(obj)).equals(mName) ) {
                 return true;
             } else {
                 return false;
