@@ -154,7 +154,8 @@ public class NewReceiptActivity extends AppCompatActivity implements LoaderManag
             showSnackBar(R.string.empty_amount_field);
             return;
         }
-        double amount = Double.parseDouble(amountText.replace("$",""));
+
+        double amount = Double.parseDouble(amountText.replace("$","").replace(",",""));
 
         Receipt receipt = new Receipt(mLocation, category, methodOfPayment, mDate, amount);
         getContentResolver().insert(ReceiptsTable.CONTENT_URI, ReceiptsTable.getContentValues(receipt, false));
