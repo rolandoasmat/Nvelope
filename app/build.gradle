@@ -10,7 +10,7 @@ android {
         }
     }
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.rolandoasmat.nvelope"
         minSdkVersion 19
@@ -46,7 +46,9 @@ dependencies {
 //  External
     compile 'com.squareup:javapoet:1.2.0'
     compile 'ckm.simple:simple_sql_provider_annotation:1.0.6'
+    annotationProcessor 'ckm.simple:simple_sql_provider_annotation:1.0.6'
     compile 'ckm.simple:simple_sql_provider_processor:1.0.6'
+    annotationProcessor 'ckm.simple:simple_sql_provider_processor:1.0.6'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     compile 'com.jakewharton:butterknife:8.8.1'
     compile 'com.github.BlacKCaT27:CurrencyEditText:2.0.1'
